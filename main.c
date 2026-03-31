@@ -16,12 +16,7 @@ int main() {
         return 1;
     }
 
-    // 3. Check index boundaries and print the value
-    if (index >= 0 && index < data_size) {
-        printf("data[%d] = %d\n", index, data[index]);
-    } else {
-        printf("Error: Index out of bounds (valid range: 0-%d).\n", data_size - 1);
-    }
+    printf("data[%d] = %d\n", index, data[index]);
 
     return 0;
 }
