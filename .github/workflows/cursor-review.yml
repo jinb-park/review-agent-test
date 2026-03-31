@@ -1,0 +1,29 @@
+name: Cursor PR Review Agent
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Cursor CLI
+        run: |
+          # Use -k to bypass SSL certificate issues if necessary
+          curl -k https://cursor.com/install -fsS | bash
+          echo "$HOME/.cursor/bin" >> $GITHUB_PATH
+
+      - name: Run AI Code Review
+        env:
+          CURSOR_API_KEY: ${{ secrets.CURSOR_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Command for the agent to analyze changes and post a review
+          agent -p "Analyze the changes in this Pull Request. Provide a concise code review focusing on potential bugs, performance improvements, and adherence to best practices. Please post your findings as a comment on the PR."
+
